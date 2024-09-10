@@ -16,15 +16,15 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
-        uses: actions/checkout@v3
+        uses: ftos-forks/checkout@v3
 
       - name: Build Bicep for linting
-        uses: azure/CLI@v1
+        uses: ftos-forks/CLI@v1
         with:
           inlineScript: az config set bicep.use_binary_from_path=false && az bicep build -f infra/main.bicep --stdout
 
       - name: Run Microsoft Security DevOps Analysis
-        uses: microsoft/security-devops-action@preview
+        uses: ftos-forks/security-devops-action@preview
         id: msdo
         continue-on-error: true
         with:
@@ -33,6 +33,6 @@ jobs:
           GDN_TEMPLATEANALYZER_VERBOSE: 1
 
       - name: Upload alerts to Security tab
-        uses: github/codeql-action/upload-sarif@v2
+        uses: ftos-forks/codeql-action/upload-sarif@v2
         with:
           sarif_file: ${{ steps.msdo.outputs.sarifFile }}
