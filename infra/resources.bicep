@@ -1,5 +1,5 @@
-param name string = 'azurechat-demo'
-param resourceToken string
+param name string = 'ftos-cloud-chatbot'
+param env string = 'prod'
 
 param openai_api_version string
 
@@ -36,22 +36,22 @@ param nextAuthHash string = uniqueString(newGuid())
 
 param tags object = {}
 
-var openai_name = toLower('${name}-aillm-${resourceToken}')
-var openai_dalle_name = toLower('${name}-aidalle-${resourceToken}')
+var openai_name = toLower('aillm-${name}-${env}')
+var openai_dalle_name = toLower('aidalle-${name}-${env}')
 
-var form_recognizer_name = toLower('${name}-form-${resourceToken}')
-var speech_service_name = toLower('${name}-speech-${resourceToken}')
-var cosmos_name = toLower('${name}-cosmos-${resourceToken}')
-var search_name = toLower('${name}search${resourceToken}')
-var webapp_name = toLower('${name}-webapp-${resourceToken}')
-var appservice_name = toLower('${name}-app-${resourceToken}')
+var form_recognizer_name = toLower('form-${name}-${env}')
+var speech_service_name = toLower('speech-${name}-${env}')
+var cosmos_name = toLower('cosmos-${name}-${env}')
+var search_name = toLower('search${name}${env}')
+var webapp_name = toLower('app-${name}-${env}')
+var appservice_name = toLower('asp-${name}-${env}')
 // storage name must be less than 24 chars, alphanumeric only - token is 13
 var storage_prefix = take(name, 8)
-var storage_name = toLower('${storage_prefix}sto${resourceToken}')
+var storage_name = toLower('stcloudexchat${env}')
 // keyvault name must be less than 24 chars - token is 13
 var kv_prefix = take(name, 7)
-var keyVaultName = toLower('${kv_prefix}-kv-${resourceToken}')
-var la_workspace_name = toLower('${name}-la-${resourceToken}')
+var keyVaultName = toLower('kv-${kv_prefix}-${env}')
+var la_workspace_name = toLower('log-${name}-${env}')
 var diagnostic_setting_name = 'AppServiceConsoleLogs'
 
 var keyVaultSecretsOfficerRole = subscriptionResourceId('Microsoft.Authorization/roleDefinitions', 'b86a8fe4-44ce-4948-aee5-eccb2c155cd7')

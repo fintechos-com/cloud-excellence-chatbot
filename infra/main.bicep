@@ -3,11 +3,11 @@ targetScope = 'subscription'
 @minLength(1)
 @maxLength(64)
 @description('Name of the the environment which is used to generate a short unique hash used in all resources.')
-param name string
+param name string = 'ftos-cloud-chatbot'
 
 @minLength(1)
 @description('Primary location for all resources')
-param location string
+param location string = 'westeurope'
 
 // azure open ai -- only regions supporting gpt-35-turbo v1106
 @description('Location for the OpenAI resource group')
@@ -17,7 +17,7 @@ param location string
     type: 'location'
   }
 })
-param openAILocation string
+param openAILocation string = 'francecentral'
 
 param openAISku string = 'S0'
 param openAIApiVersion string ='2024-08-01-preview'
@@ -33,7 +33,7 @@ param embeddingModelName string = 'text-embedding-ada-002'
 // DALL-E v3 only supported in Sweden Central for now
 @description('Location for the OpenAI DALL-E 3 instance resource group')
 @allowed(['swedencentral'])
-param dalleLocation string
+param dalleLocation string = 'swedencentral'
 
 param dalleDeploymentCapacity int = 1
 param dalleDeploymentName string = 'dall-e-3'
@@ -44,13 +44,12 @@ param formRecognizerSkuName string = 'S0'
 param searchServiceIndexName string = 'azure-chat'
 param searchServiceSkuName string = 'standard'
 
-// TODO: define good default Sku and settings for storage account
 param storageServiceSku object = { name: 'Standard_LRS' } 
 param storageServiceImageContainerName string = 'images'
 
-param resourceGroupName string = ''
+param resourceGroupName string = 'RG-ftos-cloud-chatbot-PROD'
 
-var resourceToken = toLower(uniqueString(subscription().id, name, location))
+var env = 'prod'
 var tags = { 'azd-env-name': name }
 
 // Organize resources in a resource group
@@ -65,7 +64,7 @@ module resources 'resources.bicep' = {
   scope: rg
   params: {
     name: name
-    resourceToken: resourceToken
+    env: env
     tags: tags
     openai_api_version: openAIApiVersion
     openAiLocation: openAILocation
